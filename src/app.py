@@ -49,10 +49,6 @@ def endpoint_outliers():
 
 @app.route('/correlacion', methods=['POST'])
 def endpoint_correlacion():
-    """
-    Recibe JSON con 'df' (lista de diccionarios) y los nombres de 'col1' y 'col2'.
-    Ejemplo: {"df": [{"a": 1, "b": 2}, {"a": 2, "b": 4}], "col1": "a", "col2": "b"}
-    """
     body = request.get_json(silent=True)
     
     # Validaciones de entrada
@@ -60,16 +56,18 @@ def endpoint_correlacion():
         return jsonify({"error": "Faltan parámetros: 'df', 'col1' y 'col2' son obligatorios."}), 400
     
     try:
+        # Convertimos la lista de diccionarios a DataFrame
         df = pd.DataFrame(body["df"])
         col1, col2 = body["col1"], body["col2"]
         
+        # Validar que las columnas existan
         if col1 not in df.columns or col2 not in df.columns:
-            return jsonify({"error": f"Columnas '{col1}' o '{col2}' no encontradas en los datos."}), 400
+            return jsonify({"error": f"Columnas '{col1}' o '{col2}' no encontradas."}), 400
 
-        # Tu función integrada
-        correlacion = float(df[col1].corr(df[col2]))
+        # --- LLAMADA A TU FUNCIÓN IMPORTADA ---
+        resultado = correlacion_columnas(df, col1, col2)
         
-        return jsonify({"correlacion": correlacion}), 200
+        return jsonify({"correlacion": resultado}), 200
     except Exception as exc:
         return jsonify({"error": f"Error al calcular la correlación: {str(exc)}"}), 400
 
