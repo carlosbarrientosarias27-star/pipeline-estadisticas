@@ -1,7 +1,7 @@
 # src/app.py
-from flask import Flask,request,jsonify
+from flask import Flask, request, jsonify
 import pandas as pd
-from src.estadisticas import resumen_estadistico,detectar_outliers_iqr,correlacion_columnas
+from src.estadisticas import resumen_estadistico, detectar_outliers_iqr, correlacion_columnas
 
 app = Flask(__name__)
 
@@ -75,3 +75,4 @@ def health_check():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    

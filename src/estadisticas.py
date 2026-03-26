@@ -1,7 +1,5 @@
-# src/estadisticas.py
 import numpy as np
 import pandas as pd
-from typing import Union
 
 
 def resumen_estadistico(datos: list) -> dict:
@@ -31,6 +29,7 @@ def resumen_estadistico(datos: list) -> dict:
         "percentil_25": float(np.percentile(arr, 25)),
         "percentil_75": float(np.percentile(arr, 75)),
     }
+
 
 def detectar_outliers_iqr(datos: list) -> list:
     """Devuelve lista con los valores outliers usando el método IQR.
