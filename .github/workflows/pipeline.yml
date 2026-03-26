@@ -28,7 +28,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: 🧪 Tests unitarios con cobertura ≥ 85%
         run: |
-          pytest test_estadisticas.py test_graficos.py -v --cov=src --cov-fail-under=85
+          pytest -v --cov=src --cov-fail-under=85
 
 # ─── ETAPA 3: Tests de integración ───────────────────────────
   integration-tests:
