@@ -1,6 +1,7 @@
 # src/app.py
 from flask import Flask, request, jsonify
-from src.estadisticas import resumen_estadistico, detectar_outliers_iqr
+import pandas as pd 
+from src.estadisticas import resumen_estadistico, detectar_outliers_iqr,correlacion_columnas 
 
 app = Flask(__name__)
 
@@ -44,6 +45,33 @@ def endpoint_outliers():
         return jsonify({"error": str(exc)}), 400
 
     return jsonify({"outliers": outliers}), 200
+
+
+@app.route('/correlacion', methods=['POST'])
+def endpoint_correlacion():
+    """
+    Recibe JSON con 'df' (lista de diccionarios) y los nombres de 'col1' y 'col2'.
+    Ejemplo: {"df": [{"a": 1, "b": 2}, {"a": 2, "b": 4}], "col1": "a", "col2": "b"}
+    """
+    body = request.get_json(silent=True)
+    
+    # Validaciones de entrada
+    if not body or not all(k in body for k in ("df", "col1", "col2")):
+        return jsonify({"error": "Faltan parámetros: 'df', 'col1' y 'col2' son obligatorios."}), 400
+    
+    try:
+        df = pd.DataFrame(body["df"])
+        col1, col2 = body["col1"], body["col2"]
+        
+        if col1 not in df.columns or col2 not in df.columns:
+            return jsonify({"error": f"Columnas '{col1}' o '{col2}' no encontradas en los datos."}), 400
+
+        # Tu función integrada
+        correlacion = float(df[col1].corr(df[col2]))
+        
+        return jsonify({"correlacion": correlacion}), 200
+    except Exception as exc:
+        return jsonify({"error": f"Error al calcular la correlación: {str(exc)}"}), 400
 
 
 @app.route('/salud', methods=['GET'])
