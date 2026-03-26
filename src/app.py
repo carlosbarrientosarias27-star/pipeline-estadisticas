@@ -1,7 +1,7 @@
 # src/app.py
-from flask import Flask, request, jsonify
-import pandas as pd 
-from src.estadisticas import resumen_estadistico, detectar_outliers_iqr,correlacion_columnas 
+from flask import Flask,request,jsonify
+import pandas as pd
+from src.estadisticas import resumen_estadistico,detectar_outliers_iqr,correlacion_columnas
 
 app = Flask(__name__)
 
@@ -50,23 +50,18 @@ def endpoint_outliers():
 @app.route('/correlacion', methods=['POST'])
 def endpoint_correlacion():
     body = request.get_json(silent=True)
-    
     # Validaciones de entrada
     if not body or not all(k in body for k in ("df", "col1", "col2")):
         return jsonify({"error": "Faltan parámetros: 'df', 'col1' y 'col2' son obligatorios."}), 400
-    
     try:
         # Convertimos la lista de diccionarios a DataFrame
         df = pd.DataFrame(body["df"])
         col1, col2 = body["col1"], body["col2"]
-        
         # Validar que las columnas existan
         if col1 not in df.columns or col2 not in df.columns:
             return jsonify({"error": f"Columnas '{col1}' o '{col2}' no encontradas."}), 400
-
         # --- LLAMADA A TU FUNCIÓN IMPORTADA ---
         resultado = correlacion_columnas(df, col1, col2)
-        
         return jsonify({"correlacion": resultado}), 200
     except Exception as exc:
         return jsonify({"error": f"Error al calcular la correlación: {str(exc)}"}), 400
