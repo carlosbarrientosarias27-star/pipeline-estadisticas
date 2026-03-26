@@ -41,7 +41,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: 🔗 Tests de integración API Flask
         # Asegúrate de que este archivo también esté en la raíz sin el prefijo tests/
-        run: pytest test_api.py -v
+        run: pytest -v
 
 
 # ─── ETAPA 4: Seguridad con bandit ───────────────────────────
