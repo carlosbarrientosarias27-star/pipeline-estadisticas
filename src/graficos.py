@@ -38,10 +38,9 @@ def boxplot_comparativo(datos_a: list, datos_b: list,
     for patch, color in zip(bp["boxes"], colores):
         patch.set_facecolor(color)
         patch.set_alpha(0.75)
-
     ax.set_title("Boxplot Comparativo", fontsize=14, fontweight="bold")
     ax.set_ylabel("Valor")
     fig.tight_layout()
     fig.savefig(ruta, dpi=100)
     plt.close(fig)
-        
+    
