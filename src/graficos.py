@@ -1,4 +1,4 @@
-import matplotlib
+iimport matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -43,3 +43,4 @@ def boxplot_comparativo(datos_a: list, datos_b: list,
     fig.tight_layout()
     fig.savefig(ruta, dpi=100)
     plt.close(fig)
+    
