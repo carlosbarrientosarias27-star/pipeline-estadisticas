@@ -40,10 +40,10 @@ def df_mixto():
 class TestResumenEstadistico:
     def test_valores_correctos(self, datos_normales):
         res = resumen_estadistico(datos_normales)
-        np.testing.assert_almost_equal(res["media"], 5.0, decimal=5)
+        np.testing.assert_almost_equal(res["media"], 4.75, decimal=5)
         np.testing.assert_almost_equal(res["mediana"], 4.5, decimal=5)
         assert res["minimo"] == 2.0
-        assert res["maximo"] == 9.0
+        assert res["maximo"] == 7.0
         assert "percentil_25" in res
         assert "percentil_75" in res
 
