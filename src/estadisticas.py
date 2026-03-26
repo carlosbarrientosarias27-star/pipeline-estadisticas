@@ -5,30 +5,32 @@ from typing import Union
 
 
 def resumen_estadistico(datos: list) -> dict:
-    """Recibe lista de números y devuelve dict con:
-    media, mediana, desv_tipica, minimo, maximo, percentil_25, percentil_75.
-    Lanza ValueError si la lista está vacía o contiene no-numéricos.
-    Usa numpy para todos los cálculos.
+    """Recibe lista de números y devuelve dict con estadísticas.
+    Maneja n=1 devolviendo desv_tipica=0.0 sin warnings.
     """
     if not datos:
         raise ValueError("La lista no puede estar vacía.")
 
+    # Validación de tipos
     for i, v in enumerate(datos):
         if not isinstance(v, (int, float)):
             raise ValueError(f"El elemento en posición {i} ('{v}') no es numérico.")
 
     arr = np.array(datos, dtype=float)
+    n = len(arr)
+
+    # Evitamos RuntimeWarning: Degrees of freedom <= 0
+    desv = float(np.std(arr, ddof=1)) if n > 1 else 0.0
 
     return {
         "media": float(np.mean(arr)),
         "mediana": float(np.median(arr)),
-        "desv_tipica": float(np.std(arr, ddof=1)),   # ddof=1 → desviación muestral
+        "desv_tipica": desv,
         "minimo": float(np.min(arr)),
         "maximo": float(np.max(arr)),
         "percentil_25": float(np.percentile(arr, 25)),
         "percentil_75": float(np.percentile(arr, 75)),
     }
-
 
 def detectar_outliers_iqr(datos: list) -> list:
     """Devuelve lista con los valores outliers usando el método IQR.
