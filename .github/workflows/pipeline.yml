@@ -27,8 +27,9 @@ jobs:
         with: { python-version: '3.11' }
       - run: pip install -r requirements.txt
       - name: 🧪 Tests unitarios con cobertura ≥ 85%
-        run: pytest tests/test_estadisticas.py tests/test_graficos.py
-               -v --cov=src --cov-fail-under=85
+        run: 
+          pytest test_estadisticas.py test_graficos.py \
+          -v --cov=src --cov-fail-under=85
 
 
 # ─── ETAPA 3: Tests de integración ───────────────────────────
@@ -41,7 +42,7 @@ jobs:
         with: { python-version: '3.11' }
       - run: pip install -r requirements.txt
       - name: 🔗 Tests de integración API Flask
-        run: pytest tests/test_api.py -v
+        run: pytest test_api.py -v
 
 
 # ─── ETAPA 4: Seguridad con bandit ───────────────────────────
